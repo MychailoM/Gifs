@@ -23,7 +23,7 @@ class GifSearch extends Component{
           value={this.state.inputValue}
           onChange={this.onChange}
         />
-        <button type="submit"></button>
+        <button type="submit">OK</button>
       </form>
     )
   }
