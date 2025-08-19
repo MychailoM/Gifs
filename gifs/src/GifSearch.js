@@ -7,7 +7,7 @@ class GifSearch extends Component{
 
   onSubmit = (e) => {
     e.preventDefault();
-    this.props.onSearch(this.state.inputValue)
+    this.props.onSearch(this.setState.inputValue)
   }
 
   onChange = (e) => {
