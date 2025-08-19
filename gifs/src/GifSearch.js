@@ -1,4 +1,4 @@
-import './GifSearch.css'
+import "./GifSearch.css";
 import React, { Component } from "react";
 
 class GifSearch extends Component {
@@ -24,17 +24,15 @@ class GifSearch extends Component {
             placeholder="Пошук"
             value={this.state.inputValue}
             onChange={this.onChange}
-            className='input'
+            className="input"
           />
-          <button className='button' type="submit">Search</button>
+          <button className="button" type="submit">
+            Search
+          </button>
         </form>
       </header>
     );
   }
 }
 
-<<<<<<< HEAD
 export default GifSearch;
-=======
-export default GifSearch
->>>>>>> b47bfd8be668708cd8d9b34c0bd8f200b6ea529f
