@@ -1,48 +1,66 @@
 import React, { Component } from "react";
-import axios from 'axios';
+import axios from "axios";
+import './GifList.css'
+
+const Loader = () => {
+  return (
+    <div className="LoaderOverlay">
+      <div className="Spinner"></div>
+    </div>
+  );
+};
 
 class GifList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      gifsArr: [],
-      page: props.page,
-      keyword: props.keyword,
-    };
-  }
-  //https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${keyword}&limit=${limit}&lang=en
-  async fetchGifs(keyword, page) {
+  state = {
+    gifsArr: [],
+    loading: false,
+  };
+
+  async fetchGifs(keyword, count) {
+    this.setState({ loading: true });
     try {
       const apiUrl = "https://api.giphy.com/v1/gifs/search?";
       const apiKey = "1Xuto0LkLNqJaIQKUqPKW8Bw2xLcjyT7";
-      const res = await axios.get(`${apiUrl}api_key=${apiKey}&q=${keyword}&limit=${page}&lang=en`);
-      this.setState({gifsArr: res.data.data})
+      const res = await axios.get(`
+        ${apiUrl}api_key=${apiKey}&q=${keyword}&limit=${count}&lang=en
+        `);
+      this.setState({ gifsArr: res.data.data });
     } catch (error) {
-      console.error("Error");
+      console.error("Error", error);
+    } finally {
+      this.setState({ loading: false });
     }
   }
 
   componentDidMount() {
-    this.fetchGifs(this.state.keyword, this.state.page);
+    this.fetchGifs(this.props.keyword, this.props.count);
   }
 
-  componentDidUpdate(prevState) {
-    if (prevState.keyword !== this.state.keyword || prevState.page !== this.state.page) {
-      this.fetchGifs(this.state.keyword, this.state.page);
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.keyword !== this.props.keyword ||
+      prevProps.count !== this.props.count
+    ) {
+      this.fetchGifs(this.props.keyword, this.props.count);
     }
   }
 
   render() {
-    const { gifsArr } = this.state;
+    const { gifsArr, loading } = this.state;
     return (
-      <ul>
-        {gifsArr.map((gif) => (
-          <li key={gif.id}>
-            <img src={gif.images.fixed_height.url} alt={gif.title} />
-          </li>
-        ))}
-      </ul>
+      <>
+        {loading && <Loader />}
+
+        <ul className="list">
+          {gifsArr.map((gif) => (
+            <li className="item" key={gif.id}>
+              <img src={gif.images.fixed_height.url} alt={gif.title} />
+            </li>
+          ))}
+        </ul>
+      </>
     );
   }
 }
+
 export default GifList;
